@@ -46,7 +46,7 @@ def setup():
 
     hostname = socket.gethostname();
 
-    if hostname == 'z':  #Christophs Laptop
+    if hostname == 'kagalaska.nld':  #Christophs Laptop
         IlastikPath = '/home/ckirst/programs/ilastik-1.1.9-Linux';
         ElastixPath = '/home/ckirst/programs/elastix/';
 
@@ -58,8 +58,8 @@ def setup():
         IlastikPath = '/home/yueqi/app/ilastik-1.2.2rc4-Linux';
         ElastixPath = None;
 
-    elif hostname == 'Yueqi-MBP.local': #MTL workstation
-        IlastikPath = '/Applications/ilastik-1.2.2rc4-OSX';
+    elif 'yueqi-mbp' in hostname.lower(): #MTL workstation
+        IlastikPath = '/Applications/ilastik-1.2.2rc4-OSX.app/Contents/ilastik-release';
         ElastixPath = None;
     ## insert your hostname specific settings here ##
     #elif hostname == 'your-host-name':
