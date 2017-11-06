@@ -3,7 +3,7 @@
 Module to set *ClearMap's* internal parameter and paths to external programs.
 
 Notes:
-    Edit the :func:`setup` routine to point to the ilastik and elastix paths 
+    Edit the :func:`setup` routine to point to the ilastik and elastix paths
     for specific hosts
 
 See Also:
@@ -21,7 +21,7 @@ IlastikPath = '/usr/local/ilastik-1.1.9-Linux';
 
 Notes:
    `Ilastik Webpage <http://ilastik.org/>`_
-   
+
    `Ilastik 0.5 Download <http://old.ilastik.org/>`_
 """
 
@@ -35,29 +35,36 @@ Notes:
 
 def setup():
     """Setup ClearMap for specific hosts
-    
+
     Notes:
         Edit this routine to include special setttings for specific hosts
-        
+
     See Also:
         :const:`IlastikPath`, :const:`ElastixPath`
     """
     global IlastikPath, ElastixPath
-    
+
     hostname = socket.gethostname();
-    
-    if hostname == 'kagalaska.nld':  #Christophs Laptop 
+
+    if hostname == 'kagalaska.nld':  #Christophs Laptop
         IlastikPath = '/home/ckirst/programs/ilastik-1.1.9-Linux';
         ElastixPath = '/home/ckirst/programs/elastix/';
-    
+
     elif hostname == 'mtllab-Ubuntu': #MTL workstation
         IlastikPath = '/usr/local/ilastik-1.1.9-Linux';
-        ElastixPath = '/usr/local/elastix';       
-    
+        ElastixPath = '/usr/local/elastix';
+
+    elif hostname == 'MoonLinux':  #Christophs Laptop
+        IlastikPath = '/home/yueqi/app/ilastik-1.2.2rc4-Linux';
+        ElastixPath = None;
+
+    elif 'yueqi-mbp' in hostname.lower(): #MTL workstation
+        IlastikPath = '/Applications/ilastik-1.2.2rc4-OSX.app/Contents/ilastik-release';
+        ElastixPath = None;
     ## insert your hostname specific settings here ##
     #elif hostname == 'your-host-name':
     #    IlastikPath = 'path-to-ilastik';
-    #    ElastixPath = 'path-to-elastix';   
+    #    ElastixPath = 'path-to-elastix';
     ##
 
     # check existence:
@@ -66,7 +73,7 @@ def setup():
             #raise RuntimeWarning('Settings: elastix path %s does not exists, cf. Settings.py or type help(Settings) for details.' % ElastixPath);
             print 'Settings: elastix path %s does not exists, cf. Settings.py or type help(Settings) for details.' % ElastixPath;
             ElastixPath = None;
-    
+
     if not IlastikPath is None:
         if not os.path.exists(IlastikPath):
             #raise RuntimeWarning('Settings: ilastik path %s does not exists, cf. Settings.py or type help(Settings) for details.' % IlastikPath);
@@ -78,7 +85,7 @@ setup();
 
 def clearMapPath():
     """Returns root path to the ClearMap software
-    
+
     Returns:
         str: root path to ClearMap
     """

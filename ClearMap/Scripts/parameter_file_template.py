@@ -60,18 +60,18 @@ ImageProcessingMethod = "SpotDetection";
 
 #For illumination correction (necessitates a specific calibration curve for your microscope)
 correctIlluminationParameter = {
-    "flatfield"  : None,  # (True or None)  flat field intensities, if None do not correct image for illumination 
+    "flatfield"  : None,  # (True or None)  flat field intensities, if None do not correct image for illumination
     "background" : None, # (None or array) background image as file name or array, if None background is assumed to be zero
     "scaling"    : "Mean", # (str or None)        scale the corrected result by this factor, if 'max'/'mean' scale to keep max/mean invariant
     "save"       : None,       # (str or None)        save the corrected image to file
-    "verbose"    : True    # (bool or int)        print / plot information about this step 
+    "verbose"    : True    # (bool or int)        print / plot information about this step
 }
 
 #Remove the background with morphological opening (optimised for spherical objects)
 removeBackgroundParameter = {
     "size"    : (7,7),  # size in pixels (x,y) for the structure element of the morphological opening
     "save"    : None,     # file name to save result of this operation
-    "verbose" : True  # print / plot information about this step       
+    "verbose" : True  # print / plot information about this step
 }
 
 #Difference of Gaussians filter: to enhance the edges. Useful if the objects have a non smooth texture (eg: amyloid deposits)
@@ -79,7 +79,7 @@ filterDoGParameter = {
     "size"    : None,        # (tuple or None)      size for the DoG filter in pixels (x,y,z) if None, do not correct for any background
     "sigma"   : None,        # (tuple or None)      std of outer Gaussian, if None automatically determined from size
     "sigma2"  : None,        # (tuple or None)      std of inner Gaussian, if None automatically determined from size
-    "save"    : None,        # (str or None)        file name to save result of this operation if None dont save to file 
+    "save"    : None,        # (str or None)        file name to save result of this operation if None dont save to file
     "verbose" : True      # (bool or int)        print / plot information about this step
 }
 
@@ -88,11 +88,11 @@ findExtendedMaximaParameter = {
     "hMax"      : None,            # (float or None)     h parameter (for instance 20) for the initial h-Max transform, if None, do not perform a h-max transform
     "size"      : 5,             # (tuple)             size for the structure element for the local maxima filter
     "threshold" : 0,        # (float or None)     include only maxima larger than a threshold, if None keep all local maxima
-    "save"      : None,         # (str or None)       file name to save result of this operation if None dont save to file 
+    "save"      : None,         # (str or None)       file name to save result of this operation if None dont save to file
     "verbose"   : True       # (bool or int)       print / plot information about this step
 }
 
-#If no cell shape detection and the maximum intensity is not at the gravity center of the object, look for a peak intensity around the center of mass. 
+#If no cell shape detection and the maximum intensity is not at the gravity center of the object, look for a peak intensity around the center of mass.
 findIntensityParameter = {
     "method" : 'Max',       # (str, func, None)   method to use to determine intensity (e.g. "Max" or "Mean") if None take intensities at the given pixels
     "size"   : (3,3,3)      # (tuple)             size of the search box on which to perform the *method*
@@ -101,12 +101,12 @@ findIntensityParameter = {
 #Object volume detection. The object is painted by a watershed, until reaching the intensity threshold, based on the background subtracted image
 detectCellShapeParameter = {
     "threshold" : 700,     # (float or None)      threshold to determine mask. Pixels below this are background if None no mask is generated
-    "save"      : None,        # (str or None)        file name to save result of this operation if None dont save to file 
+    "save"      : None,        # (str or None)        file name to save result of this operation if None dont save to file
     "verbose"   : True      # (bool or int)        print / plot information about this step if None take intensities at the given pixels
 }
 
 
-## Parameters for cell detection using spot detection algorithm 
+## Parameters for cell detection using spot detection algorithm
 detectSpotsParameter = {
     "correctIlluminationParameter" : correctIlluminationParameter,
     "removeBackgroundParameter"    : removeBackgroundParameter,
@@ -115,9 +115,6 @@ detectSpotsParameter = {
     "findIntensityParameter"       : findIntensityParameter,
     "detectCellShapeParameter"     : detectCellShapeParameter
 }
-
-
-
 
 
 #################### Heat map generation
@@ -129,9 +126,9 @@ VoxelizationFile = os.path.join(BaseDirectory, 'points_voxelized.tif');
 voxelizeParameter = {
     #Method to voxelize
     "method" : 'Spherical', # Spherical,'Rectangular, Gaussian'
-       
+
     # Define bounds of the volume to be voxelized in pixels
-    "size" : (15,15,15),  
+    "size" : (15,15,15),
 
     # Voxelization weigths (e/g intensities)
     "weights" : None
@@ -145,7 +142,7 @@ voxelizeParameter = {
 
 #Processes to use for Resampling (usually twice the number of physical processors)
 ResamplingParameter = {
-    "processes": 12 
+    "processes": 12
 };
 
 
@@ -153,7 +150,7 @@ ResamplingParameter = {
 StackProcessingParameter = {
     #max number of parallel processes. Be careful of the memory footprint of each process!
     "processes" : 6,
-   
+
     #chunk sizes: number of planes processed at once
     "chunkSizeMax" : 100,
     "chunkSizeMin" : 50,
@@ -161,10 +158,10 @@ StackProcessingParameter = {
 
     #optimize chunk size and number to number of processes to limit the number of cycles
     "chunkOptimization" : True,
-    
+
     #increase chunk size for optimization (True, False or all = automatic)
     "chunkOptimizationSize" : all,
-   
+
     "processMethod" : "parallel"
    };
 
@@ -185,40 +182,40 @@ CorrectionResamplingParameterCfos = ResamplingParameter.copy();
 
 CorrectionResamplingParameterCfos["source"] = cFosFile;
 CorrectionResamplingParameterCfos["sink"]   = os.path.join(BaseDirectory, 'cfos_resampled.tif');
-    
+
 CorrectionResamplingParameterCfos["resolutionSource"] = OriginalResolution;
 CorrectionResamplingParameterCfos["resolutionSink"]   = ResolutionAffineCFosAutoFluo;
 
 CorrectionResamplingParameterCfos["orientation"] = FinalOrientation;
-   
-   
-   
+
+
+
 #Files for Auto-fluorescence for acquisition movements correction
 CorrectionResamplingParameterAutoFluo = CorrectionResamplingParameterCfos.copy();
 CorrectionResamplingParameterAutoFluo["source"] = AutofluoFile;
 CorrectionResamplingParameterAutoFluo["sink"]   = os.path.join(BaseDirectory, 'autofluo_for_cfos_resampled.tif');
-   
+
 #Files for Auto-fluorescence (Atlas Registration)
 RegistrationResamplingParameter = CorrectionResamplingParameterAutoFluo.copy();
 RegistrationResamplingParameter["sink"]            =  os.path.join(BaseDirectory, 'autofluo_resampled.tif');
 RegistrationResamplingParameter["resolutionSink"]  = AtlasResolution;
-   
+
 
 ### Align cFos and Autofluo
 
-CorrectionAlignmentParameter = {            
+CorrectionAlignmentParameter = {
     #moving and reference images
     "movingImage" : os.path.join(BaseDirectory, 'autofluo_for_cfos_resampled.tif'),
     "fixedImage"  : os.path.join(BaseDirectory, 'cfos_resampled.tif'),
-    
+
     #elastix parameter files for alignment
     "affineParameterFile"  : os.path.join(PathReg, 'Par0000affine_acquisition.txt'),
     "bSplineParameterFile" : None,
-    
+
     #directory of the alignment result
     "resultDirectory" :  os.path.join(BaseDirectory, 'elastix_cfos_to_auto')
-    }; 
-  
+    };
+
 
 ### Align Autofluo and Atlas
 
@@ -226,7 +223,7 @@ CorrectionAlignmentParameter = {
 RegistrationAlignmentParameter = CorrectionAlignmentParameter.copy();
 
 RegistrationAlignmentParameter["resultDirectory"] = os.path.join(BaseDirectory, 'elastix_auto_to_atlas');
-    
+
 #moving and reference images
 RegistrationAlignmentParameter["movingImage"]  = AtlasFile;
 RegistrationAlignmentParameter["fixedImage"]   = os.path.join(BaseDirectory, 'autofluo_resampled.tif');
@@ -270,4 +267,3 @@ CorrectionResamplingPointsInverseParameter["pointSink"]  = None;
 RegistrationResamplingPointParameter = RegistrationResamplingParameter.copy();
 RegistrationResamplingPointParameter["dataSizeSource"] = cFosFile;
 RegistrationResamplingPointParameter["pointSink"]  = None;
-
